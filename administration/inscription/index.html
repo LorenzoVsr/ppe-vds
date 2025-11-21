@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html lang="fr">
+<head>
+    <title>Administration – Inscriptions</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="data:,">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="/composant/bootstrap/bootstrap.min.css">
+    <script src="/composant/bootstrap/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- JS de la page -->
+    <script type="module" src="index.js"></script>
+
+    <script>
+        // Exemple : données envoyées par PHP via json_encode()
+        let lesInscriptions = [
+            {
+                "id": 1,
+                "dateEpreuve": "2025-05-14",
+                "nomEpreuve": "Trail du Vent",
+                "urlInscription": "https://inscription.example.com/1",
+                "urlInscrits": "https://inscrits.example.com/1",
+                "dateOuverture": "2025-02-01",
+                "dateCloture": "2025-05-10"
+            },
+            {
+                "id": 2,
+                "dateEpreuve": "2025-06-02",
+                "nomEpreuve": "Course des Collines",
+                "urlInscription": "https://inscription.example.com/2",
+                "urlInscrits": "https://inscrits.example.com/2",
+                "dateOuverture": "2025-03-01",
+                "dateCloture": "2025-05-25"
+            }
+        ];
+    </script>
+</head>
+
+<body>
+<header>
+    <div class="d-flex justify-content-between align-items-center">
+        <!-- Navigation -->
+        <div>
+            <a href="/" class="me-2 text-decoration-none" title="Accueil">🏠</a>
+            <span class="me-2 masquer">Bienvenue, Administrateur</span>
+            <a href="/administration" class="me-2">Administration</a>
+            <a href="/membre/deconnexion" class="me-2">Se déconnecter</a>
+        </div>
+
+        <!-- Titre -->
+        <div class="text-end fw-bold masquer">
+            Gestion des inscriptions
+        </div>
+    </div>
+</header>
+
+<main>
+    <div class="m-1" style="width: 60rem">
+
+        <div class="d-flex justify-content-between mb-3">
+            <p>Nombre d'inscriptions : <span id="nb" class="fw-bold text-success"></span></p>
+            <a href="ajout.php" class="btn btn-outline-primary mb-3">Ajouter une inscription</a>
+        </div>
+
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th style="width:130px">Actions</th>
+                <th style="width:150px">Date épreuve</th>
+                <th style="width:300px">Nom de l'épreuve</th>
+                <th style="width:150px">Ouverture</th>
+                <th style="width:150px">Clôture</th>
+            </tr>
+            </thead>
+            <tbody id="lesLignes"></tbody>
+        </table>
+
+    </div>
+</main>
+
+</body>
+</html>
