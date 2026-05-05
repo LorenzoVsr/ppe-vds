@@ -1,62 +1,85 @@
 "use strict";
 
-// -----------------------------------------------------------------------------------
-// Import des fonctions nécessaires
-// -----------------------------------------------------------------------------------
+import {appelAjax} from "/composant/fonction/ajax.js";
+import {confirmer} from "/composant/fonction/afficher.js";
+import {creerBoutonSuppression, creerBoutonModification} from "/composant/fonction/formulaire.js";
 
-import {initialiserToutesLesCartes, basculerToutesLesCartes} from "/composant/fonction/openclose.js?";
-import {formatDateLong} from "/composant/fonction/date.js";
+/* global lesInscriptions */
 
-// -----------------------------------------------------------------------------------
-// Déclaration des variables globales
-// -----------------------------------------------------------------------------------
+const lesLignes = document.getElementById('lesLignes');
+const nb = document.getElementById('nb');
 
-/* global prochaineEdition, lesClassements*/
+nb.innerText = lesInscriptions.length;
 
-// Récupération des éléments de l'interface
-const detailClassement = document.getElementById('detailClassement');
-const dateEpreuve = document.getElementById('dateEpreuve');
-const descriptionEpreuve = document.getElementById('descriptionEpreuve');
-const btnOuvrirToutes = document.getElementById('btnOuvrirToutes');
-const btnFermerToutes = document.getElementById('btnFermerToutes');
+for (const element of lesInscriptions) {
+    const id = element.id;
+    const tr = lesLignes.insertRow();
+    tr.style.verticalAlign = 'middle';
+    tr.id = id;
 
-// -----------------------------------------------------------------------------------
-// Procédures évènementielles
-// -----------------------------------------------------------------------------------
+    // Colonne actions
+    const tdAction = document.createElement('td');
+    const container = document.createElement('div');
+    Object.assign(container.style, {display: 'flex', gap: '8px', alignItems: 'center'});
 
-btnOuvrirToutes.onclick = () => basculerToutesLesCartes(true);
-btnFermerToutes.onclick = () => basculerToutesLesCartes(false); // fermer
+    const btnModifier = creerBoutonModification(() => {
+        window.location.href = 'modifier.php?id=' + id;
+    });
+    container.appendChild(btnModifier);
 
+    const supprimer = () =>
+        appelAjax({
+            url: '/ajax/supprimer.php',
+            data: {table: 'Inscription', id: id},
+            success: () => {
+                tr.remove();
+                nb.innerText = parseInt(nb.innerText) - 1;
+            }
+        });
+    container.appendChild(creerBoutonSuppression(() => confirmer(supprimer)));
 
-// -----------------------------------------------------------------------------------
-// Programme principal
-// -----------------------------------------------------------------------------------
+    tdAction.appendChild(container);
+    tr.appendChild(tdAction);
 
-// Mise en place du système d'ouverture/fermeture des cadres
-initialiserToutesLesCartes();
+    // Nom
+    const tdNom = tr.insertCell();
+    tdNom.innerText = element.nom;
+    tdNom.style.fontWeight = 'bold';
 
-// les informations
+    // Date épreuve
+    tr.insertCell().innerText = element.dateEpreuveFr;
 
-// affichage de la prochaine épreuve
-dateEpreuve.innerText =  formatDateLong(prochaineEdition.date);
-descriptionEpreuve.innerHTML = prochaineEdition.description;
+    // Date ouverture
+    tr.insertCell().innerText = element.dateOuvertureFr;
 
+    // Date clôture
+    tr.insertCell().innerText = element.dateCloturesFr;
 
-// afficher les derniers classements pdf
-for (const element of lesClassements) {
-    let a = document.createElement('a');
-    a.classList.add('lien'),
-        a.href = "/afficherclassement.php?id=" + element.id;
-    a.innerText = element.dateFr + ' ' + element.titre;
-    detailClassement.appendChild(a);
+    // Lien inscription
+    const tdLienInscription = tr.insertCell();
+    tdLienInscription.style.textAlign = 'center';
+    if (element.lienInscription) {
+        const a = document.createElement('a');
+        a.href = element.lienInscription;
+        a.target = '_blank';
+        a.title = 'Ouvrir le lien d\'inscription';
+        a.innerText = '🔗';
+        tdLienInscription.appendChild(a);
+    } else {
+        tdLienInscription.innerText = '—';
+    }
+
+    // Lien inscrits
+    const tdLienInscrit = tr.insertCell();
+    tdLienInscrit.style.textAlign = 'center';
+    if (element.lienInscrit) {
+        const a = document.createElement('a');
+        a.href = element.lienInscrit;
+        a.target = '_blank';
+        a.title = 'Voir les inscrits';
+        a.innerText = '🔗';
+        tdLienInscrit.appendChild(a);
+    } else {
+        tdLienInscrit.innerText = '—';
+    }
 }
-
-
-
-
-
-
-
-
-
-

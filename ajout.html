@@ -1,0 +1,34 @@
+<div class="formulaire" style="max-width: 48rem">
+    <div id="msg"></div>
+
+    <label for="nom" class="obligatoire">
+        Nom de l'épreuve
+        <span class="commentaire">(3 à 100 caractères, lettres, chiffres, virgule, espace ou tiret)</span>
+    </label>
+    <input id="nom" type="text" required minlength="3" maxlength="100"
+           pattern="^[0-9A-Za-zÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ](?:[, \-]?[0-9A-Za-zÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ])*$"
+           autocomplete="off">
+
+    <label for="dateOuverture" class="obligatoire">Date d'ouverture des inscriptions</label>
+    <input id="dateOuverture" type="date" required>
+
+    <label for="dateCloture" class="obligatoire">Date de clôture des inscriptions</label>
+    <input id="dateCloture" type="date" required>
+
+    <label for="dateEpreuve" class="obligatoire">Date de l'épreuve</label>
+    <input id="dateEpreuve" type="date" required>
+
+    <label for="lienInscription">
+        Lien d'inscription
+        <span class="commentaire">(facultatif)</span>
+    </label>
+    <input id="lienInscription" type="url" autocomplete="off" placeholder="https://...">
+
+    <label for="lienInscrit">
+        Lien vers les inscrits
+        <span class="commentaire">(facultatif)</span>
+    </label>
+    <input id="lienInscrit" type="url" autocomplete="off" placeholder="https://...">
+
+    <button id="btnAjouter" class="btn btn-danger mt-2">Ajouter</button>
+</div>
